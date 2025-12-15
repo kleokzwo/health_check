@@ -1,25 +1,42 @@
 # BitcoinII Dashboard (Docker)
 
-A lightweight, self-hosted **dashboard for a BitcoinII full node**, designed to run alongside `kzwo/bitcoin-ii` using Docker or Docker Compose.
+A lightweight, self-hosted **dashboard & explorer for a BitcoinII full node**, designed to run alongside `kzwo/bitcoin-ii` using Docker or Docker Compose.
 
 * ✅ No exposed RPC by default
 * ✅ Uses **cookie-based RPC auth** (best practice)
 * ✅ Works on **x86 & ARM (Raspberry Pi)**
 * ✅ Minimal, fast, and dependency-light
+* ✅ **Explorer + Health UI** with shared theme
+* ✅ Ready for **future indexer & Grafana integration**
 
 ---
 
 ## Screenshots
 
-> Simple status dashboard showing:
-![BitcoinII Dashboard](https://raw.githubusercontent.com/kleokzwo/health_check/refs/heads/main/health_check.png)
+### Health Dashboard
 
+> Node status & sync overview
+> ![BitcoinII Dashboard](https://raw.githubusercontent.com/kleokzwo/health_check/refs/heads/main/dashboard/src/public/images/health.png)
+
+Shows:
 
 * chain & block height
-* sync status
+* sync / IBD status
 * peers
 * mempool size & usage
 * node version
+
+### Lightweight Explorer
+
+> RPC-only explorer (UTXO-based)
+> ![BitcoinII Explorer](https://raw.githubusercontent.com/kleokzwo/health_check/refs/heads/main/dashboard/src/public/images/explorer.png)
+
+Supports:
+
+* latest blocks
+* mempool sample
+* block / tx / address lookup
+  *(address history is UTXO-only unless an indexer is enabled)*
 
 ---
 
@@ -37,7 +54,7 @@ Recommended:
 
 ## Quick Start (Recommended: Docker Compose)
 
-### 1️⃣ Create a new folder
+### Create a new folder
 
 ```bash
 mkdir bitcoinii-stack
@@ -46,7 +63,7 @@ cd bitcoinii-stack
 
 ---
 
-### 2️⃣ Create `docker-compose.yml`
+### Create `docker-compose.yml`
 
 ```yaml
 services:
@@ -97,8 +114,19 @@ services:
       RPC_PORT: "8337"
       RPC_COOKIE: "/data/.cookie"
 
+      # Future use
+      INDEXER_ENABLED: "false"
+      INDEXER_PROVIDER: ""
+
     ports:
       - "127.0.0.1:3000:3000"
+
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/health | grep -q '\"ok\"'"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
 
     networks:
       bc2net:
@@ -117,7 +145,7 @@ volumes:
 
 ---
 
-### 3️⃣ Start everything
+### Start everything
 
 ```bash
 docker compose up -d
@@ -125,9 +153,15 @@ docker compose up -d
 
 ---
 
-### 4️⃣ Open the dashboard
+## Open the UI
 
-👉 **[http://127.0.0.1:3000](http://127.0.0.1:3000)**
+* **Health Dashboard:**
+  👉 [http://127.0.0.1:3000/health-ui](http://127.0.0.1:3000/health-ui)
+
+* **Explorer:**
+  👉 [http://127.0.0.1:3000/explorer](http://127.0.0.1:3000/explorer)
+
+*(Root `/` redirects to Explorer)*
 
 ---
 
@@ -138,11 +172,19 @@ docker compose up -d
   ```
   /data/.cookie
   ```
-* The dashboard reads this file **read-only**
-* No RPC username/password needed
-* RPC port is **not exposed publicly**
+* The dashboard mounts this file **read-only**
+* No RPC username/password required
+* RPC port is **never exposed publicly**
 
-This is the same model used by Bitcoin Core tooling.
+This matches Bitcoin Core’s recommended security model.
+
+---
+
+## Health & Monitoring
+
+* `/health` — JSON health endpoint (Docker / k8s friendly)
+* Docker container includes a **built-in healthcheck**
+* Designed for **Prometheus / Grafana** integration later
 
 ---
 
@@ -178,7 +220,7 @@ docker compose up -d
 
 ## Running Dashboard with a Non-Docker Node (Advanced)
 
-If you already run `bitcoinIId` natively:
+If `bitcoinIId` runs natively:
 
 ```bash
 docker run -d \
@@ -199,20 +241,25 @@ Contributions are welcome!
 
 Ideas:
 
-* Sync progress bar
-* Peer list
+* Prometheus `/metrics` endpoint
+* Grafana dashboard
+* Indexed address history (Fulcrum / ElectrumX)
+* Peer table
 * Disk usage & uptime
-* Dark mode
-* REST / metrics endpoint
+* Dark/light theme toggle
 
-### Development
+---
+
+## Development
 
 ```bash
 git clone https://github.com/kleokzwo/health_check
-cd health_check > dashboard
+cd health_check/dashboard
 docker build -t bitcoinii-dashboard-dev .
 docker run -p 3000:3000 bitcoinii-dashboard-dev
 ```
+
+---
 
 ## Disclaimer
 
