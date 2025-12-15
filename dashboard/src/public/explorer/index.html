@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BitcoinII Explorer</title>
+
+  <link rel="stylesheet" href="/public/shared/app.css" />
+  <link rel="stylesheet" href="/explorer/assets/explorer.css" />
+
+</head>
+
+<body>
+<div class="wrap">
+  <div class="nav">
+    <div class="brand">
+      <div class="logo"></div>
+      <div class="title">
+        <b>BitcoinII Explorer</b>
+        <span class="mono" id="rpcLine">UI: /explorer</span>
+      </div>
+    </div>
+
+    <div class="navlinks">
+      <a href="/">Health</a>
+      <a class="active" href="/explorer">Explorer</a>
+    </div>
+
+    <div class="pillrow">
+      <div class="pill"><span class="dot" id="dot"></span><span id="statusText">connecting…</span></div>
+      <div class="pill">Tip <b id="tip">-</b></div>
+      <div class="pill">Peers <b id="peers">-</b></div>
+      <div class="pill">Mempool <b id="mp">-</b></div>
+    </div>
+  </div>
+
+    <div class="search">
+      <input id="q" class="mono" placeholder="Search block height / block hash / txid / address…" autocomplete="off" />
+      <button class="btn" id="go">Search</button>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="row">
+          <h2 style="margin:0">Live</h2>
+          <div class="tabs" id="tabs">
+            <button class="tab active" data-view="latest" type="button">Latest Blocks</button>
+            <button class="tab" data-view="mempool" type="button">Mempool</button>
+            <button class="tab" data-view="inspect" type="button">Inspect</button>
+          </div>
+        </div>
+        <div id="live" class="loading" style="margin-top:10px;">Loading…</div>
+      </div>
+
+      <div class="card">
+        <h2>Chain Stats</h2>
+        <div class="kvs">
+          <div class="kv"><div class="k">Chain</div><div class="v" id="chain">-</div></div>
+          <div class="kv"><div class="k">Headers</div><div class="v" id="headers">-</div></div>
+          <div class="kv"><div class="k">IBD</div><div class="v" id="ibd">-</div></div>
+          <div class="kv"><div class="k">Mempool Usage</div><div class="v" id="mpUsage">-</div><div class="sub" id="mpFee">-</div></div>
+        </div>
+        <div style="margin-top:12px" class="sub">
+          Tip: address view here is UTXO-only (RPC scan). Full address history needs an indexer.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/explorer/config.js"></script>
+  <script type="module" src="/explorer/assets/explorer.js"></script>
+</body>
+</html>

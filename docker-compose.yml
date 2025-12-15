@@ -21,6 +21,7 @@ services:
       - "-rpcport=8337"
       - "-rpcbind=0.0.0.0"
       - "-rpcallowip=172.30.0.0/24"
+      - "-txindex=1"
 
     healthcheck:
       test: ["CMD-SHELL", "bitcoinII-cli -datadir=/data -rpcwait=30 getblockchaininfo >/dev/null 2>&1 || exit 1"]
@@ -28,6 +29,7 @@ services:
       timeout: 10s
       retries: 20
       start_period: 120s
+
 
 
   dashboard:
