@@ -18,6 +18,8 @@ export function createApp() {
   // pages
   app.use(dashboardRouter());          // /
   app.use("/explorer", explorerRouter()); // /explorer
+  app.use("/api/wallet", walletRoutes({ rpc, env: process.env }));
+
 
   // api
   app.use(apiRouter());
