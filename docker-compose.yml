@@ -51,6 +51,7 @@ services:
       RPC_COOKIE: "/data/.cookie"
       RPC_HOST: bitcoinii
       RPC_PORT: "8337"
+      WALLET_NAME: "merchant_hot"
 
 
     ports:
