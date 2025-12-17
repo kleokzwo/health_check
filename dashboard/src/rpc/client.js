@@ -31,8 +31,7 @@ function getAuthorizationHeader() {
 }
 
 export async function rpc(method, params = [], opts = {}) {
-  // opts.wallet -> call /wallet/<name>
-  const walletPath = opts.wallet ? `/wallet/${encodeURIComponent(opts.wallet)}` : "";
+  const walletPath = opts.wallet ? `/wallet/${encodeURIComponent(opts.wallet)}` : "/";
   const url = `http://${RPC_HOST}:${RPC_PORT}${walletPath}`;
 
   const body = JSON.stringify({
