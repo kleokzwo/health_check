@@ -35,8 +35,9 @@ export function walletLoginPage() {
       const msg = document.getElementById("msg");
       msg.textContent = "…";
       try {
-        await jfetch("/api/auth/login", { method:"POST", body: JSON.stringify({ username, password }) });
-        location.href = "/wallet/dashboard";
+        const r = await jfetch("/api/auth/login", { method:"POST", body: JSON.stringify({ username, password }) });
+        if (r.needs_totp) location.href = "/wallet/totp";
+        else location.href = "/wallet/dashboard";
       } catch (e) {
         msg.textContent = "Error: " + e.message;
       }

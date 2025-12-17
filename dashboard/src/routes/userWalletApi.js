@@ -5,6 +5,11 @@ const unlockedUntil = new Map();
 const unlock = (sid, minutes=5) => unlockedUntil.set(sid, Date.now() + minutes * 60_000);
 const isUnlocked = (sid) => (unlockedUntil.get(sid) || 0) > Date.now();
 
+function requireSpendUnlocked(req, res, next) {
+  const until = req.session?.spendUnlockedUntil || 0;
+  if (Date.now() > until) return res.status(403).json({ error: "spend_locked" });
+  next();
+}
 
 
 export function userWalletApiRoutes({ rpc }) {
@@ -66,11 +71,11 @@ export function userWalletApiRoutes({ rpc }) {
   });
 
   r.post("/unlock", (req, res) => {
-    unlock(req.session.id, 5);
-    res.json({ ok: true, minutes: 5 });
+    req.session.spendUnlockedUntil = Date.now() + 5 * 60_000;
+    res.json({ ok: true, until: req.session.spendUnlockedUntil });
   });
 
-  r.post("/send", async (req, res) => {
+  r.post("/send", requireSpendUnlocked, async (req, res) => {
     try {
       if (!isUnlocked(req.session.id)) return res.status(403).json({ error: "locked" });
 

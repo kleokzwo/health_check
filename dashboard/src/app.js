@@ -30,8 +30,9 @@ export function createApp() {
     secret: process.env.SESSION_SECRET || "dev-change-me",
     resave: false,
     saveUninitialized: false,
-    cookie: { httpOnly: true, sameSite: "lax" }
+    cookie: { httpOnly: true, sameSite: "lax" },
   }));
+
   app.use("/public", express.static(path.resolve(__dirname, "public")));
   app.use(express.json());
 
