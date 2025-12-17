@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wallet Receive</title>
+  <link rel="stylesheet" href="/public/shared/app.css" />
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <div class="brand">
+      <div class="logo"></div>
+      <div class="title">
+        <b>BitcoinII Wallet</b>
+        <span class="mono" id="userLine">loading…</span>
+      </div>
+    </div>
+
+    <div class="navlinks">
+      <a href="/">Health</a>
+      <a href="/explorer">Explorer</a>
+      <a class="active" href="/app/dashboard.html">Wallet</a>
+    </div>
+
+    <div class="pillrow">
+      <div class="pill">Balance <b id="bal">-</b></div>
+      <div class="pill">Unconf <b id="unconf">-</b></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="row">
+        <h2 style="margin:0">Receive</h2>
+        <div class="tabs">
+          <a class="tab" href="/app/dashboard.html" style="text-decoration:none;">Overview</a>
+          <a class="tab active" href="/app/receive.html" style="text-decoration:none;">Receive</a>
+          <a class="tab" href="/app/send.html" style="text-decoration:none;">Send</a>
+          <a class="tab" href="/app/settings.html" style="text-decoration:none;">Settings</a>
+        </div>
+      </div>
+
+      <div class="sub" style="margin-top:10px;">
+        Generates a fresh incoming address (Core wallet behavior).
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+        <button class="btn" id="newBtn">New address</button>
+        <button class="btn" id="refreshBtn">Refresh</button>
+        <a class="btn" href="/app/dashboard.html" style="text-decoration:none; display:inline-flex; align-items:center;">Back</a>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
+        <div class="sub">Current address</div>
+        <div id="addr" class="mono" style="margin-top:8px; word-break:break-all;">-</div>
+        <div class="sub" id="msg" style="margin-top:10px;"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Status</h2>
+      <div id="status" class="loading">Loading…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function jfetch(url, opts) {
+    const res = await fetch(url, Object.assign({ headers: { "content-type": "application/json" } }, opts));
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+    return data;
+  }
+
+  async function ensureLogin() {
+    const me = await fetch("/api/auth/me").then(r => r.json()).catch(() => ({}));
+    if (!me.user) location.href = "/app/login";
+    document.getElementById("userLine").textContent = "User: " + me.user.username;
+  }
+
+  async function refreshSummary() {
+    const sum = await jfetch("/api/wallet/summary", { method: "GET" });
+    document.getElementById("bal").textContent = sum.balance;
+    document.getElementById("unconf").textContent = sum.unconfirmed;
+    document.getElementById("status").classList.remove("loading");
+    document.getElementById("status").innerHTML = `
+      <div class="kvs">
+        <div class="kv"><div class="k">Wallet</div><div class="v mono">${sum.wallet}</div></div>
+        <div class="kv"><div class="k">Tx count</div><div class="v mono">${sum.txcount}</div></div>
+      </div>
+    `;
+  }
+
+  document.getElementById("newBtn").onclick = async () => {
+    const msg = document.getElementById("msg");
+    msg.textContent = "Generating…";
+    try {
+      const r = await jfetch("/api/wallet/receive/new", { method: "POST", body: "{}" });
+      document.getElementById("addr").textContent = r.address;
+      msg.textContent = "OK";
+    } catch (e) {
+      msg.textContent = "Error: " + e.message;
+    }
+  };
+
+  document.getElementById("refreshBtn").onclick = () => refreshSummary().catch(e => {
+    document.getElementById("msg").textContent = "Error: " + e.message;
+  });
+
+  // idle logout (server also enforces)
+  let last = Date.now();
+  ["mousemove","keydown","click","touchstart"].forEach(ev => window.addEventListener(ev, () => last = Date.now()));
+  setInterval(async () => {
+    if (Date.now() - last > 15 * 60_000) {
+      await fetch("/api/auth/logout", { method: "POST", headers: { "content-type": "application/json" }, body: "{}" }).catch(()=>{});
+      location.href = "/app/login";
+    }
+  }, 5000);
+
+  (async () => {
+    await ensureLogin();
+    await refreshSummary();
+  })().catch(() => location.href="/app/login");
+</script>
+</body>
+</html>

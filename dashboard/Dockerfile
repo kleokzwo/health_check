@@ -1,12 +1,15 @@
-FROM node:20-alpine
+FROM node:20-bookworm-slim
 
 WORKDIR /app
 
 COPY package.json ./
-RUN npm install --omit=dev
+# if you have it
+COPY package-lock.json ./
 
-# copy source code
-COPY src ./src
+RUN npm ci --omit=dev
 
-EXPOSE 3000
-CMD ["npm", "start"]
+COPY . .
+
+RUN mkdir -p /app/db
+
+CMD ["npm","start"]

@@ -5,7 +5,7 @@ export const config = Object.freeze({
 
   // Fallback auth (only used if RPC_COOKIE is not present/readable)
   rpcUser: process.env.RPC_USER || "bc2",
-  rpcPass: process.env.RPC_PASS || "_4rm4D1%%",
+  rpcPass: process.env.RPC_PASS || "UseYour_StrongPassword%%",
 
   // Preferred auth: cookie file (e.g. /data/.cookie mounted from the node datadir)
   rpcCookiePath: process.env.RPC_COOKIE || "",

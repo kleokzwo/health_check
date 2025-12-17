@@ -1,3 +1,4 @@
+// src/rpc/client.js
 import fs from "fs";
 
 const RPC_HOST = process.env.RPC_HOST || "bitcoinii";
@@ -23,16 +24,16 @@ function getAuthorizationHeader() {
   }
 
   if (RPC_USER && RPC_PASS) {
-    return (
-      "Basic " + Buffer.from(`${RPC_USER}:${RPC_PASS}`).toString("base64")
-    );
+    return "Basic " + Buffer.from(`${RPC_USER}:${RPC_PASS}`).toString("base64");
   }
 
   return null;
 }
 
-export async function rpc(method, params = []) {
-  const url = `http://${RPC_HOST}:${RPC_PORT}/`;
+export async function rpc(method, params = [], opts = {}) {
+  const walletPath = opts.wallet ? `/wallet/${encodeURIComponent(opts.wallet)}` : "/";
+  const url = `http://${RPC_HOST}:${RPC_PORT}${walletPath}`;
+
   const body = JSON.stringify({
     jsonrpc: "1.0",
     id: "dash",
