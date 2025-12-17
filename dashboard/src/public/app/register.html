@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wallet Register</title>
+  <link rel="stylesheet" href="/public/shared/app.css" />
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <div class="brand">
+      <div class="logo"></div>
+      <div class="title">
+        <b>BitcoinII Wallet</b>
+        <span class="mono">UI: /app</span>
+      </div>
+    </div>
+
+    <div class="navlinks">
+      <a href="/">Health</a>
+      <a href="/explorer">Explorer</a>
+      <a class="active" href="/app/register">Wallet</a>
+    </div>
+  </div>
+
+  <div class="grid" style="grid-template-columns: 1fr;">
+    <div class="card" style="max-width:520px; margin: 0 auto;">
+      <h2>Create account</h2>
+      <div class="sub">Accounts are stored locally on this machine.</div>
+
+      <div style="margin-top:12px;">
+        <div class="sub">Username</div>
+        <input id="username" class="mono" autocomplete="username" />
+        <div class="sub" style="margin-top:10px;">Password</div>
+        <input id="password" type="password" autocomplete="new-password" />
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:12px;">
+        <button class="btn" id="regBtn">Register</button>
+        <a class="btn" href="/app/login" style="text-decoration:none; display:inline-flex; align-items:center;">Back to login</a>
+      </div>
+
+      <div id="msg" class="sub" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function jfetch(url, opts) {
+    const res = await fetch(url, Object.assign({ headers: { "content-type": "application/json" } }, opts));
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+    return data;
+  }
+
+  document.getElementById("regBtn").onclick = async () => {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const msg = document.getElementById("msg");
+    msg.textContent = "…";
+
+    try {
+      await jfetch("/api/auth/register", { method: "POST", body: JSON.stringify({ username, password }) });
+      location.href = "/app/dashboard.html";
+    } catch (e) {
+      msg.textContent = "Error: " + e.message;
+    }
+  };
+</script>
+</body>
+</html>
