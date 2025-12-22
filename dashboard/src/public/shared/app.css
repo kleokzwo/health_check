@@ -15,28 +15,23 @@ html, body { height: 100%; }
 body{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  color: var(--text);
-  background:
-    radial-gradient(1200px 900px at 20% 10%, rgba(122,162,255,.35) 0%, rgba(122,162,255,0) 60%),
-    radial-gradient(1100px 850px at 85% 15%, rgba(166,106,255,.28) 0%, rgba(166,106,255,0) 62%),
-    radial-gradient(1300px 1000px at 50% 90%, rgba(56,211,159,.16) 0%, rgba(56,211,159,0) 60%),
-    linear-gradient(180deg, #070a14 0%, #03040a 100%);
-  background-attachment: fixed;
+  color: #333;
   min-height: 100vh;
+  background: rgb(240, 240, 245);
 }
 
 a{color:inherit; text-decoration:none}
 .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
-.sub{font-size:12px; color:var(--muted); margin-top:6px}
+.sub{font-size: 16px;
+  color: #333;}
 
 /* layout */
 .wrap{max-width:1180px; margin:0 auto; padding:18px 18px 60px;}
 .card{
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  background: #fff;
   border:1px solid var(--line);
   border-radius: var(--radius);
   padding:14px;
-  box-shadow: var(--shadow);
 }
 
 /* top nav */
@@ -58,7 +53,7 @@ a{color:inherit; text-decoration:none}
 
 .title{display:flex; flex-direction:column;}
 .title b{font-size:16px; letter-spacing:.3px}
-.title span{color:var(--muted); font-size:12px; margin-top:2px}
+.title span{color: #333; font-size:12px; margin-top:2px}
 
 .navlinks{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 .navlinks a{
@@ -66,13 +61,13 @@ a{color:inherit; text-decoration:none}
   border-radius: 999px;
   border:1px solid var(--line);
   background: rgba(255,255,255,.04);
-  color: var(--muted);
+  color: #333;
   font-size:12px;
+  text-transform: uppercase;
+  font-weight: 800;
 }
 .navlinks a.active{
-  color: var(--text);
-  background: rgba(122,162,255,.18);
-  border-color: rgba(122,162,255,.35);
+  color: #ff6600
 }
 
 .pillrow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
@@ -82,21 +77,518 @@ a{color:inherit; text-decoration:none}
   padding:8px 10px;
   border-radius: 999px;
   font-size:12px;
-  color:var(--muted);
+  color: #333;
   display:flex; gap:8px; align-items:center;
+  text-transform: uppercase;
+  font-weight:800;
 }
 .dot{width:8px; height:8px; border-radius:999px; background:var(--bad)}
 .dot.ok{background:var(--good)}
 
 /* grid for health cards */
 .grid{display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:14px;}
+/* Keep original 3-column layout for other uses */
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* Your new 2-column grid */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 768px) {
+  .grid-2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 @media (max-width: 940px){ .grid{grid-template-columns: 1fr} }
 
 .kv{
   padding:12px;
   border-radius: 14px;
-  background: rgba(0,0,0,.18);
+  background: #333;
   border:1px solid rgba(255,255,255,.06);
+  color: #fff;
 }
-.kv .k{font-size:11px; color:var(--muted); letter-spacing:.3px; text-transform:uppercase}
+.kv .k{font-size:11px; color: #ff6600; letter-spacing:.3px; text-transform:uppercase}
 .kv .v{font-size:22px; margin-top:6px}
+
+
+/* ==========================================
+   Explorer polish (SCOPED + low-specificity)
+   Only touches: .search, .tabs/.tab, .kvs/.kv, and #live content
+   ========================================== */
+
+/* ---------- Search ---------- */
+:where(.search){
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  margin: 10px 0 16px;
+}
+
+:where(.search input){
+  flex: 1;
+  min-width: 220px;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.85);
+  outline: none;
+}
+
+:where(.search input)::placeholder{
+  opacity: .65;
+}
+
+:where(.search input:focus){
+  border-color: rgba(255,102,0,.45);
+  box-shadow: 0 0 0 6px rgba(255,102,0,.12);
+}
+
+:where(.search .btn, .search button){
+  padding: 0 50px;
+  border-radius: 25px;
+  border: 1px solid rgba(0,0,0,.10);
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: #333;
+  color: #fff;
+}
+
+:where(.search .btn:focus-visible, .search button:focus-visible){
+  outline: none;
+  box-shadow: 0 0 0 6px rgba(255,102,0,.12);
+}
+
+@media (max-width: 520px){
+  :where(.search){ flex-direction: column; }
+  :where(.search .btn, .search button){ width: 100%; }
+}
+
+/* ---------- Header row + tabs ---------- */
+:where(.card .row){
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 40px 0;
+}
+
+:where(.tabs){
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+:where(.tab){
+  padding: 8px 25px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: #333;
+  border: 0;
+  background: unset;
+}
+
+:where(.tab:hover){
+  background: rgba(255,255,255,.92);
+  border-color: rgba(0,0,0,.16);
+  color: #333;
+}
+
+:where(.tab.active){
+  border-color: rgba(255,102,0,.45);
+  box-shadow: 0 0 0 5px rgba(255,102,0,.12);
+  background: rgba(255,255,255,.96);
+  color: #ff6600;
+}
+
+/* ---------- Chain stats as responsive grid ---------- */
+:where(.kvs){
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 620px){
+  :where(.kvs){
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+:where(.kv){
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Keep your CI colors: only add spacing/typography polish */
+:where(.kv .k){
+  font-size: 11px;
+  letter-spacing: .35px;
+  text-transform: uppercase;
+}
+
+:where(.kv .v){
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.15;
+  word-break: break-word;
+  margin-top: 6px;
+}
+
+:where(.kv .sub){
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: .75;
+}
+
+/* ---------- Live table styling (applies only if #live renders a table) ---------- */
+:where(#live .table-wrap){
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.10);
+}
+
+:where(#live table){
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px; /* mobile scroll instead of breaking layout */
+}
+
+:where(#live thead th){
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .25px;
+  padding: 12px;
+  border-bottom: 1px solid rgba(0,0,0,.10);
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,.92); /* stays neutral */
+}
+
+:where(#live tbody td){
+  padding: 12px;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+  vertical-align: middle;
+}
+
+:where(#live tbody tr:nth-child(odd)){
+  background: rgba(0,0,0,.02);
+}
+
+:where(#live tbody tr:hover){
+  background: rgba(255,102,0,.06); /* subtle, matches your accent */
+}
+
+/* ---------- Pagination (optional UI) ---------- */
+:where(#live .pager){
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+:where(#live .pager .info){
+  font-size: 12px;
+  opacity: .7;
+}
+
+:where(#live .pager .controls){
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+
+:where(#live .pager button){
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.75);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+:where(#live .pager button:hover){
+  background: rgba(255,255,255,.92);
+  border-color: rgba(0,0,0,.16);
+}
+
+:where(#live .pager button:disabled){
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* ======================================
+   Wallet Auth (SCOPED) — v2 (visible + bigger)
+   Only affects: .wallet-auth .auth-card
+   ====================================== */
+
+.wallet-auth{
+  /* give the section breathing room without touching body */
+  padding: clamp(18px, 3vw, 44px) 14px;
+}
+
+.wallet-auth :where(.auth-card){
+  /* bigger card */
+  width: min(680px, 100%);
+  max-width: none !important;      /* overrides inline max-width:520px safely in this scope */
+  margin: 0 auto !important;
+
+  padding: clamp(20px, 3vw, 34px);
+  border-radius: 22px;
+}
+
+/* Title area */
+.wallet-auth :where(.auth-card h2){
+  margin: 0 0 6px 0;
+  font-size: clamp(22px, 2.2vw, 30px);
+  letter-spacing: .2px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.wallet-auth :where(.auth-card span){
+  letter-spacing: .2px;
+  text-transform: uppercase;
+  text-align: center;
+  display: block;
+}
+
+.wallet-auth :where(.auth-card .sub){
+  display: block;
+  margin: 8px;
+  font-size: 15px;
+  line-height: 1.35;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #333;  
+}
+
+/* Inputs: force visibility */
+.wallet-auth :where(.auth-card input){
+  width: 100%;
+  height: 47px;
+  margin: 0px 0px 20px;
+  padding: 0 14px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: #ffffff;
+  color: #111;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+  outline: none;
+}
+
+.wallet-auth :where(.auth-card input::placeholder){
+  color: rgba(0,0,0,.45);
+}
+
+.wallet-auth :where(.auth-card input:focus){
+  border-color: rgba(255,102,0,.55);
+  box-shadow: 0 0 0 6px rgba(255,102,0,.12);
+}
+
+/* Better spacing between blocks (you use inline margins) */
+.wallet-auth :where(.auth-card > div[style*="margin-top:12px"]){
+  margin-top: 16px !important;
+}
+
+/* Buttons row: big, clean, responsive */
+.wallet-auth :where(.auth-card > div[style*="display:flex"]){
+  margin-top: 16px !important;
+  gap: 12px !important;
+  flex-wrap: wrap;
+}
+
+/* Make both buttons same width and centered */
+.wallet-auth :where(.auth-card .btn){
+  min-height: 46px;
+  border-radius: 25px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 220px;
+  background: #333;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: 0;
+}
+
+/* If your .btn for links looks odd, keep it consistent */
+.wallet-auth :where(.auth-card a.btn){
+  text-decoration: none !important;
+}
+
+/* Message area */
+.wallet-auth :where(.auth-card #msg){
+  margin-top: 12px !important;
+  min-height: 18px;
+}
+
+/* Inputs: force visibility */
+.wallet-dashboard :where(.dashboard input){
+  width: 100%;
+  height: 47px;
+  margin: 0px 0px 20px;
+  padding: 0 14px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: #ffffff;
+  color: #111;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+  outline: none;
+}
+
+.wallet-dashboard :where(.dashboard input::placeholder){
+  color: rgba(0,0,0,.45);
+}
+
+.wallet-auth :where(.dashboard input:focus){
+  border-color: rgba(255,102,0,.55);
+  box-shadow: 0 0 0 6px rgba(255,102,0,.12);
+}
+
+.wallet-dashboard :where(.dashboard .btn){
+  min-height: 46px;
+  border-radius: 25px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 220px;
+  background: #333;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: 0;
+}
+
+/* Mobile: full width card */
+@media (max-width: 520px){
+  .wallet-auth :where(.auth-card){
+    width: 100%;
+    border-radius: 18px;
+    padding: 18px 16px;
+  }
+}
+
+
+/* ==================================================
+   Wallet pages: nested card + settings layout fixes
+   Scoped to .wallet-page only
+   ================================================== */
+
+/* 1) Nested cards inside a main card should NOT look like full cards */
+.wallet-page :where(.card .card){
+  /* “section” look */
+  margin-top: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.04);
+  box-shadow: none;               /* prevents double-shadow ugliness */
+}
+
+/* 2) Even deeper nesting (card inside card inside card) */
+.wallet-page :where(.card .card .card){
+  background: rgba(255,255,255,.03);
+  border-radius: 14px;
+}
+
+/* 3) Settings: keep same 2-col layout but make it behave better */
+.wallet-page.wallet-settings :where(.grid){
+  grid-template-columns: 1.1fr .9fr;
+}
+
+@media (max-width: 980px){
+  .wallet-page.wallet-settings :where(.grid){
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 4) Settings: make big sections breathe and avoid huge empty whitespace */
+.wallet-page.wallet-settings :where(.card h2){
+  margin-bottom: 6px;
+}
+
+/* 5) Danger Zone grid: your inline minmax(420px,1fr) is too aggressive.
+      We override it safely in this page only. */
+.wallet-page.wallet-settings :where([style*="grid-template-columns: repeat(auto-fit"]){
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+}
+
+/* 6) Make <pre> blocks and long content look “contained” */
+.wallet-page.wallet-settings :where(pre){
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.18) !important;   /* override your inline 0.25 to soften */
+}
+
+/* 7) Textarea/input sizing inside settings (only settings) */
+.wallet-page.wallet-settings :where(textarea.mono){
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: #fff;
+  color: #111;
+  padding: 12px;
+  outline: none;
+}
+
+.wallet-page.wallet-settings :where(input.mono, input[type="text"], input[type="password"]){
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: #fff;
+  color: #111;
+  padding: 0 14px;
+  outline: none;
+}
+
+/* Focus ring (scoped) */
+.wallet-page.wallet-settings :where(textarea:focus, input:focus){
+  border-color: rgba(255,102,0,.55);
+  box-shadow: 0 0 0 6px rgba(255,102,0,.10);
+}
+
+/* 8) Buttons in settings: consistent and wrap nicely */
+.wallet-page.wallet-settings :where(.btn){
+  min-height: 46px;
+  border-radius: 25px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 220px;
+  background: #333;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: 0;
+}
+
+/* 9) Nice QR sizing on small screens */
+.wallet-page.wallet-settings :where(#qr){
+  max-width: min(260px, 100%) !important;
+  height: auto;
+}
+
+.danger-card {
+  padding: 20px;
+  background-color: #f60;
+  border-radius: 10px;
+}

@@ -5,7 +5,7 @@ export function explorerPage() {
     <button class="btn" id="go">Search</button>
   </div>
 
-  <div class="grid">
+  <div class="grid-2col">
     <div class="card">
       <div class="row">
         <h2 style="margin:0">Live</h2>
@@ -15,7 +15,9 @@ export function explorerPage() {
           <button class="tab" data-view="inspect" type="button">Inspect</button>
         </div>
       </div>
-      <div id="live" class="loading" style="margin-top:10px;">Loading…</div>
+      <div id="live">
+        <div class="table-wrap"></div>
+      </div>
     </div>
 
     <div class="card">

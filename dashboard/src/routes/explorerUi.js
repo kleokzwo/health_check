@@ -18,7 +18,7 @@ export function explorerRouter() {
   router.get("/", (req, res) => {
     const html = layout({
       title: "BitcoinII Explorer",
-      head: `<link rel="stylesheet" href="/explorer/assets/explorer.css" />`,
+      head: `<link rel="stylesheet" href="/shared/app.css" />`,
       nav: mainNav({ active: "explorer", user: res.locals.user }),
       pills: `
         <div class="pill"><span class="dot" id="dot"></span><span id="statusText">connecting…</span></div>

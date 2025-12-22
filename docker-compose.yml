@@ -50,15 +50,30 @@ services:
     volumes:
       - bc2-data:/data:ro
       - ./dashboard/db:/app/db
+      - ./dashboard/src:/app/src
+      - ./dashboard/public:/app/public
+      - ./dashboard/views:/app/views
     environment:
       RPC_COOKIE: "/data/.cookie"
       RPC_HOST: bitcoinii
       RPC_PORT: "8337"
       WALLET_NAME: "merchant_hot"
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
+      NODE_ENV: development
 
 
     ports:
       - "127.0.0.1:3000:3000"
+    command: npm run dev
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
 
 
 networks:

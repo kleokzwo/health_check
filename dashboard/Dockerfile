@@ -2,14 +2,11 @@ FROM node:20-bookworm-slim
 
 WORKDIR /app
 
-COPY package.json ./
-# if you have it
-COPY package-lock.json ./
-
-RUN npm ci --omit=dev
-
-COPY . .
-
+COPY package*.json ./
+RUN npm ci
+COPY src ./src
+COPY public ./public
+COPY views ./views
 RUN mkdir -p /app/db
 
-CMD ["npm","start"]
+CMD ["npm", "run", "start"]

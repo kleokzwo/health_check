@@ -1,0 +1,8 @@
+{
+  "watch": ["src", "public", "views"],
+  "ext": "js,json,css,html",
+  "ignore": ["node_modules/", "db/", "*.test.js"],
+  "exec": "node src/index.js",
+  "legacyWatch": true,
+  "pollingInterval": 1000
+}
