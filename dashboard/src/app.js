@@ -1,13 +1,17 @@
 import express from "express";
 import path from "path";
 import session from "express-session";
+import livereload from "livereload";
+import connectLiveReload from "connect-livereload";
 
+const isDev = process.env.NODE_ENV !== "production";
 
 import { explorerRouter } from "./routes/explorerUi.js";
 import { healthRouter } from "./routes/health.js";
 import { apiRouter } from "./routes/api.js";
 import { streamRouter } from "./routes/stream.js";
 import { dashboardRouter } from "./routes/dashboard.js";
+
 
 import { rpc } from "./rpc/client.js";
 
@@ -22,6 +26,17 @@ import { totpApiRoutes } from "./routes/totpApi.js";
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 export function createApp() {
+  if (isDev) {
+    const lrServer = livereload.createServer({
+      exts: ["css", "js", "html"],
+      delay: 150
+    });
+
+    lrServer.watch([
+      "/app/public",
+      "/app/views"
+    ]);
+  }
   const app = express();
   const db = openUserDb(process.env.AUTH_DB_PATH || path.resolve(__dirname, "../db/wallet-ui.sqlite"));
 
@@ -55,6 +70,7 @@ export function createApp() {
   app.use(apiRouter());
   app.use(streamRouter());
   app.use(healthRouter());
+  app.use(connectLiveReload());
 
   return app;
 }

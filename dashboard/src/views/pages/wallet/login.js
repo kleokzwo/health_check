@@ -1,15 +1,18 @@
 export function walletLoginPage() {
   return `
-  <div class="grid" style="grid-template-columns:1fr;">
-    <div class="card" style="max-width:520px; margin:0 auto;">
+  <div class="wallet-auth">
+    <div class="grid" style="grid-template-columns:1fr;">
+      <div class="card auth-card" style="max-width:520px; margin:0 auto;">
       <h2>Login</h2>
-      <div class="sub">Local/NAS wallet UI</div>
+      <span>Local/NAS wallet UI</span>
 
       <div style="margin-top:12px;">
-        <div class="sub">Username</div>
+        <label class="sub" for="username">Username</label>
         <input id="username" class="mono" autocomplete="username" />
-        <div class="sub" style="margin-top:10px;">Password</div>
+
+        <label class="sub" for="password" style="margin-top:10px;">Password</label>
         <input id="password" type="password" autocomplete="current-password" />
+
       </div>
 
       <div style="display:flex; gap:10px; margin-top:12px;">
@@ -18,6 +21,7 @@ export function walletLoginPage() {
       </div>
 
       <div id="msg" class="sub" style="margin-top:10px;"></div>
+      </div>
     </div>
   </div>
 

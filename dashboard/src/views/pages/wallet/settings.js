@@ -1,6 +1,7 @@
 export function walletSettingsPage() {
   return `
-  <div class="grid">
+  <div class="wallet-page wallet-settings">
+  <div class="grid-2col">
     <div class="card">
       <div class="row">
         <h2 style="margin:0">Settings</h2>
@@ -37,11 +38,13 @@ export function walletSettingsPage() {
 
       <!-- Danger Zone -->
       <div class="card" style="margin-top:12px;">
-        <h2 style="margin-top:0;">Danger Zone</h2>
-        <div class="sub">
-          Descriptor backup is the correct backup for modern (descriptor) wallets.
-          Keep it private. If someone gets this, they may be able to recover your wallet.
-          TOTP is required.
+        <div class="danger-card">
+          <h2 style="margin-top:0;">Danger Zone</h2>
+          <div class="sub">
+            Descriptor backup is the correct backup for modern (descriptor) wallets.
+            Keep it private. If someone gets this, they may be able to recover your wallet.
+            TOTP is required.
+          </div>
         </div>
 
         <div style="display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); margin-top:12px;">
@@ -87,7 +90,7 @@ export function walletSettingsPage() {
       </div>
     </div>
   </div>
-
+  </div>
   <script>
     async function jfetch(url, opts){
       const res = await fetch(url, Object.assign({headers:{"content-type":"application/json"}}, opts));

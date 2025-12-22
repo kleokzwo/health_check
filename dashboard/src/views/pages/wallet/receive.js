@@ -1,34 +1,36 @@
 export function walletReceivePage() {
   return `
-  <div class="grid">
-    <div class="card">
-      <div class="row">
-        <h2 style="margin:0">Receive</h2>
-        <div class="tabs">
-          <a class="tab" href="/wallet/dashboard" style="text-decoration:none;">Overview</a>
-          <a class="tab active" href="/wallet/receive" style="text-decoration:none;">Receive</a>
-          <a class="tab" href="/wallet/send" style="text-decoration:none;">Send</a>
-          <a class="tab" href="/wallet/settings" style="text-decoration:none;">Settings</a>
+  <div class="wallet-dashboard">
+    <div class="grid-2col">
+      <div class="card dashboard">
+        <div class="row">
+          <h2 style="margin:0">Receive</h2>
+          <div class="tabs">
+            <a class="tab" href="/wallet/dashboard" style="text-decoration:none;">Overview</a>
+            <a class="tab active" href="/wallet/receive" style="text-decoration:none;">Receive</a>
+            <a class="tab" href="/wallet/send" style="text-decoration:none;">Send</a>
+            <a class="tab" href="/wallet/settings" style="text-decoration:none;">Settings</a>
+          </div>
+        </div>
+
+        <div class="sub" style="margin-top:10px;">Generate a fresh receiving address.</div>
+
+        <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+          <button class="btn" id="newBtn">New address</button>
+          <button class="btn" id="refreshBtn">Refresh</button>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <div class="sub">Current address</div>
+          <div id="addr" class="mono" style="margin-top:8px; word-break:break-all;">-</div>
+          <div id="msg" class="sub" style="margin-top:10px;"></div>
         </div>
       </div>
 
-      <div class="sub" style="margin-top:10px;">Generate a fresh receiving address.</div>
-
-      <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
-        <button class="btn" id="newBtn">New address</button>
-        <button class="btn" id="refreshBtn">Refresh</button>
+      <div class="card">
+        <h2>Status</h2>
+        <div id="status" class="loading">Loading…</div>
       </div>
-
-      <div class="card" style="margin-top:12px;">
-        <div class="sub">Current address</div>
-        <div id="addr" class="mono" style="margin-top:8px; word-break:break-all;">-</div>
-        <div id="msg" class="sub" style="margin-top:10px;"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Status</h2>
-      <div id="status" class="loading">Loading…</div>
     </div>
   </div>
 

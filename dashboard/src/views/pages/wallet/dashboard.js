@@ -1,7 +1,8 @@
 export function walletDashboardPage() {
   return `
-  <div class="grid">
-    <div class="card">
+  <div class="wallet-dashboard">
+  <div class="grid-2col">
+    <div class="card dashboard">
       <div class="row">
         <h2 style="margin:0">Wallet</h2>
         <div class="tabs">
@@ -14,7 +15,7 @@ export function walletDashboardPage() {
 
       <div id="overview" class="loading" style="margin-top:10px;">Loading…</div>
 
-      <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+      <div style="display:flex; gap:10px; margin-top:12px;">
         <button class="btn" id="createWalletBtn">Create Wallet (once)</button>
         <button class="btn" id="refreshBtn">Refresh</button>
       </div>
@@ -26,6 +27,7 @@ export function walletDashboardPage() {
       <h2>Latest Transactions</h2>
       <div id="txs" class="loading">Loading…</div>
     </div>
+  </div>
   </div>
 
   <script>
@@ -39,10 +41,10 @@ export function walletDashboardPage() {
     function renderTxs(txs){
       if(!txs.length) return "<div class='sub'>No transactions yet.</div>";
       return "<div class='kvs'>" + txs.slice(0,15).map(t =>
-        "<div class='kv'>" +
-          "<div class='k mono'>"+ new Date((t.time||0)*1000).toLocaleString() +"</div>" +
-          "<div class='v mono'>"+(t.category||"")+" "+(t.amount??"")+" (conf: "+(t.confirmations??"")+")</div>" +
-          "<div class='sub mono'>"+(t.txid||"")+"</div>" +
+        "<div class='v mono'>" +
+          "<span class='tx-cat'>"+ new Date((t.time||0)*1000).toLocaleString() +"</span>" +
+          "<span class='tx-amt'>"+(t.category||"")+" "+(t.amount??"")+" (conf: "+(t.confirmations??"")+")</span>" +
+          "<span class='tx-conf'>"+(t.txid||"")+"</span>" +
         "</div>"
       ).join("") + "</div>";
     }

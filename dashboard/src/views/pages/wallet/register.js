@@ -1,14 +1,15 @@
 export function walletRegisterPage() {
   return `
-  <div class="grid" style="grid-template-columns:1fr;">
-    <div class="card" style="max-width:520px; margin:0 auto;">
+  <div class="wallet-auth">
+    <div class="grid" style="grid-template-columns:1fr;">
+      <div class="card auth-card" style="max-width:520px; margin:0 auto;">
       <h2>Create account</h2>
-      <div class="sub">Stored locally on this machine</div>
+      <span>Stored locally on this machine</span>
 
       <div style="margin-top:12px;">
-        <div class="sub">Username</div>
+        <label class="sub" for="username">Username</label>
         <input id="username" class="mono" autocomplete="username" />
-        <div class="sub" style="margin-top:10px;">Password</div>
+        <label class="sub" for="password" style="margin-top:10px;">Password</label>
         <input id="password" type="password" autocomplete="new-password" />
       </div>
 
@@ -18,6 +19,7 @@ export function walletRegisterPage() {
       </div>
 
       <div id="msg" class="sub" style="margin-top:10px;"></div>
+      </div>
     </div>
   </div>
 
