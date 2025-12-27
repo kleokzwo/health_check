@@ -1,64 +1,67 @@
----
-icon: hand-wave
-metaLinks:
-  alternates:
-    - https://app.gitbook.com/s/yE16Xb3IemPxJWydtPOj/
----
+# docs
 
-# BitcoinII Dashboard (Docker)
+## BitcoinII Dashboard
 
-A lightweight, self-hosted **dashboard & explorer for a BitcoinII full node**, designed to run alongside `kzwo/bitcoin-ii` using Docker or Docker Compose.
+**Self-Hosted Node Dashboard, Explorer & Wallet**
 
-* ✅ No exposed RPC by default
-* ✅ Uses **cookie-based RPC auth** (best practice)
-* ✅ Works on **x86 & ARM (Raspberry Pi)**
-* ✅ Minimal, fast, and dependency-light
-* ✅ **Explorer + Health UI** with shared theme
-* ✅ Ready for **future indexer & Grafana integration**
+BitcoinII Dashboard is a **lightweight, self-hosted web interface** for running and monitoring a **BitcoinII full node**.\
+It is designed to run **alongside your node**, prioritizing **security, simplicity, and local control**.
 
-***
+This project provides:
 
-## Screenshots
+* 🩺 Node health & sync monitoring
+* 🔍 Lightweight blockchain explorer
+* 👛 Optional local wallet UI (advanced users only)
+* 🐳 Docker-first deployment
+* 🔐 Cookie-based RPC authentication
 
-### Health Dashboard
-
-> Node status & sync overview ![BitcoinII Dashboard](https://raw.githubusercontent.com/kleokzwo/health_check/refs/heads/main/dashboard/src/public/images/health.png)
-
-Shows:
-
-* chain & block height
-* sync / IBD status
-* peers
-* mempool size & usage
-* node version
-
-### Lightweight Explorer
-
-> RPC-only explorer (UTXO-based) ![BitcoinII Explorer](https://raw.githubusercontent.com/kleokzwo/health_check/refs/heads/main/dashboard/src/public/images/explorer.png)
-
-Supports:
-
-* latest blocks
-* mempool sample
-* block / tx / address lookup _(address history is UTXO-only unless an indexer is enabled)_
+> **Design Philosophy**\
+> The dashboard must never reduce the security posture of the node it observes.
 
 ***
 
-## Requirements
+### Why This Project Exists
+
+Running a full node should not require:
+
+* Exposing RPC ports publicly
+* Heavy indexers for basic inspection
+* Cloud dashboards with unclear security
+
+BitcoinII Dashboard was built to provide **clear visibility**, **minimal overhead**, and **strong defaults**, while remaining fully self-hosted.
+
+***
+
+### Features Overview
+
+| Feature      | Description                             |
+| ------------ | --------------------------------------- |
+| Health Check | Node sync, peers, mempool, chain state  |
+| Explorer     | Latest blocks, mempool, tx/block lookup |
+| Wallet UI    | Local hot wallet (advanced use only)    |
+| Security     | Cookie-based RPC auth, no exposed RPC   |
+| Platform     | x86, ARM, NAS, Raspberry Pi             |
+| Deployment   | Docker / Docker Compose                 |
+
+***
+
+## Getting Started
+
+### Requirements
 
 * Docker ≥ 20
 * Docker Compose v2
-* A running BitcoinII node (Docker or native)
+* A running BitcoinII full node
 
-Recommended:
+**Recommended image:**
 
-* [`kzwo/bitcoin-ii`](https://hub.docker.com/r/kzwo/bitcoin-ii)
+* `kzwo/bitcoin-ii`
 
 ***
 
-## Quick Start (Recommended: Docker Compose)
+### Quick Start (Docker Compose)
 
-### Create a new folder
+#### 1. Create a project directory
 
 ```bash
 mkdir bitcoinii-stack
@@ -67,81 +70,37 @@ cd bitcoinii-stack
 
 ***
 
-### Create `docker-compose.yml`
+#### 2. Create `docker-compose.yml`
 
 ```yaml
 services:
   bitcoinii:
     image: kzwo/bitcoin-ii:latest
-    container_name: bitcoinii
     restart: unless-stopped
-
     volumes:
       - bc2-data:/data
-
     ports:
-      - "8338:8338"               # P2P
-      - "127.0.0.1:8339:8339"     # local-only service
-
+      - "8338:8338"
+      - "127.0.0.1:8339:8339"
     command:
-      - "-printtoconsole=1"
       - "-server=1"
       - "-rpcport=8337"
       - "-rpcbind=0.0.0.0"
       - "-rpcallowip=172.30.0.0/24"
 
-    healthcheck:
-      test: ["CMD-SHELL", "bitcoinII-cli -datadir=/data -rpcwait=30 getblockchaininfo >/dev/null 2>&1 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 20
-      start_period: 120s
-
-    networks:
-      bc2net:
-        ipv4_address: 172.30.0.10
-
   dashboard:
     image: kzwo/bitcoin-ii-dashboard:latest
-    container_name: bitcoinii-dashboard
-    restart: unless-stopped
-
     depends_on:
       bitcoinii:
         condition: service_healthy
-
     volumes:
-      - bc2-data:/data:ro   # read-only access to RPC cookie
-
+      - bc2-data:/data:ro
     environment:
       RPC_HOST: bitcoinii
       RPC_PORT: "8337"
       RPC_COOKIE: "/data/.cookie"
-
-      # Future use
-      INDEXER_ENABLED: "false"
-      INDEXER_PROVIDER: ""
-
     ports:
       - "127.0.0.1:3000:3000"
-
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/health | grep -q '\"ok\"'"]
-      interval: 15s
-      timeout: 5s
-      retries: 10
-      start_period: 20s
-
-    networks:
-      bc2net:
-        ipv4_address: 172.30.0.20
-
-networks:
-  bc2net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.30.0.0/24
 
 volumes:
   bc2-data:
@@ -149,7 +108,7 @@ volumes:
 
 ***
 
-### Start everything
+#### 3. Start services
 
 ```bash
 docker compose up -d
@@ -157,97 +116,79 @@ docker compose up -d
 
 ***
 
-## Open the UI
+### Accessing the UI
 
-* **Health Dashboard:** 👉 [http://127.0.0.1:3000/health-ui](http://127.0.0.1:3000/health-ui)
-* **Explorer:** 👉 [http://127.0.0.1:3000/explorer](http://127.0.0.1:3000/explorer)
+| Feature          | URL          |
+| ---------------- | ------------ |
+| Health Dashboard | `/health-ui` |
+| Explorer         | `/explorer`  |
+| Wallet           | `/wallet`    |
 
-_(Root `/` redirects to Explorer)_
-
-***
-
-## How it works (Security model)
-
-*   The BitcoinII node creates an **RPC cookie** at:
-
-    ```
-    /data/.cookie
-    ```
-* The dashboard mounts this file **read-only**
-* No RPC username/password required
-* RPC port is **never exposed publicly**
-
-This matches Bitcoin Core’s recommended security model.
+> Root `/` redirects to Explorer.
 
 ***
 
-## Health & Monitoring
+## Health Check
 
-* `/health` — JSON health endpoint (Docker / k8s friendly)
-* Docker container includes a **built-in healthcheck**
-* Designed for **Prometheus / Grafana** integration later
+![Health Check Placeholder](./docs/images/health.png)
 
-***
-
-## Common Commands
-
-### View logs
-
-```bash
-docker compose logs -f bitcoinii
-docker compose logs -f dashboard
-```
-
-### Stop everything
-
-```bash
-docker compose down
-```
-
-### Restart
-
-```bash
-docker compose up -d
-```
-
-### Update images
-
-```bash
-docker compose pull
-docker compose up -d
-```
+Provides real-time visibility into node state and synchronization progress.
 
 ***
 
-## Running Dashboard with a Non-Docker Node (Advanced)
+## Lightweight Explorer
 
-If `bitcoinIId` runs natively:
+![Explorer Placeholder](./docs/images/explorer.png)
 
-```bash
-docker run -d \
-  --name bitcoinii-dashboard \
-  -p 127.0.0.1:3000:3000 \
-  -v ~/.bitcoinII:/data:ro \
-  -e RPC_COOKIE=/data/.cookie \
-  -e RPC_HOST=host.docker.internal \
-  -e RPC_PORT=8337 \
-  kzwo/bitcoin-ii-dashboard:latest
-```
+Inspect blockchain data via RPC without running an indexer.
 
 ***
 
-## Contributing
+## Wallet (Advanced Feature)
 
-Contributions are welcome!
+![Wallet Overview Placeholder](./docs/images/new_wallet.png)
 
-Ideas:
+The wallet UI is designed **only for trusted environments** (NAS, home servers).
 
-* Prometheus `/metrics` endpoint
-* Grafana dashboard
-* Indexed address history (Fulcrum / ElectrumX)
-* Peer table
-* Disk usage & uptime
-* Dark/light theme toggle
+***
+
+### Creating a Wallet
+
+![Wallet Create Placeholder](./docs/images/new_wallet01.png)
+
+Create a wallet once from the Overview page.
+
+***
+
+### Receiving Funds
+
+![Wallet Receive Placeholder](./docs/images/generate_address.png)
+
+Generate fresh receiving addresses safely.
+
+***
+
+### Sending Funds
+
+![Wallet Send Placeholder](./docs/images/spending.png)
+
+Spending is locked by default for safety.
+
+***
+
+### TOTP / Two-Factor Authentication
+
+![Wallet Settings Placeholder](./docs/images/settings.png)
+
+Protect wallet actions using TOTP / 2FA.
+
+***
+
+## Security Architecture
+
+* Cookie-based RPC authentication
+* No exposed RPC credentials
+* Network-isolated Docker services
 
 ***
 
@@ -256,16 +197,28 @@ Ideas:
 ```bash
 git clone https://github.com/kleokzwo/health_check
 cd health_check/dashboard
-docker build -t bitcoinii-dashboard-dev .
-docker run -p 3000:3000 bitcoinii-dashboard-dev
+docker compose up -d
+docker compose logs -f dashboard
+
+or:
+
+docker compose build dashboard
+docker compose up -d dashboard
+docker compose logs -f dashboard
+
 ```
+
+***
+
+## Contributing
+
+Contributions are welcome. Please open issues or pull requests.
 
 ***
 
 ## Disclaimer
 
-This is an **unofficial community project** and not endorsed by the BitcoinII Core developers.
-
+This is an **unofficial community project**.\
 Use at your own risk.
 
 ***
