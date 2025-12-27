@@ -1,3 +1,10 @@
+---
+icon: hand-wave
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/yE16Xb3IemPxJWydtPOj/
+---
+
 # BitcoinII Dashboard (Docker)
 
 A lightweight, self-hosted **dashboard & explorer for a BitcoinII full node**, designed to run alongside `kzwo/bitcoin-ii` using Docker or Docker Compose.
@@ -9,14 +16,13 @@ A lightweight, self-hosted **dashboard & explorer for a BitcoinII full node**, d
 * ✅ **Explorer + Health UI** with shared theme
 * ✅ Ready for **future indexer & Grafana integration**
 
----
+***
 
 ## Screenshots
 
 ### Health Dashboard
 
-> Node status & sync overview
-> ![BitcoinII Dashboard](https://raw.githubusercontent.com/kleokzwo/health_check/refs/heads/main/dashboard/src/public/images/health.png)
+> Node status & sync overview ![BitcoinII Dashboard](https://raw.githubusercontent.com/kleokzwo/health_check/refs/heads/main/dashboard/src/public/images/health.png)
 
 Shows:
 
@@ -28,17 +34,15 @@ Shows:
 
 ### Lightweight Explorer
 
-> RPC-only explorer (UTXO-based)
-> ![BitcoinII Explorer](https://raw.githubusercontent.com/kleokzwo/health_check/refs/heads/main/dashboard/src/public/images/explorer.png)
+> RPC-only explorer (UTXO-based) ![BitcoinII Explorer](https://raw.githubusercontent.com/kleokzwo/health_check/refs/heads/main/dashboard/src/public/images/explorer.png)
 
 Supports:
 
 * latest blocks
 * mempool sample
-* block / tx / address lookup
-  *(address history is UTXO-only unless an indexer is enabled)*
+* block / tx / address lookup _(address history is UTXO-only unless an indexer is enabled)_
 
----
+***
 
 ## Requirements
 
@@ -50,7 +54,7 @@ Recommended:
 
 * [`kzwo/bitcoin-ii`](https://hub.docker.com/r/kzwo/bitcoin-ii)
 
----
+***
 
 ## Quick Start (Recommended: Docker Compose)
 
@@ -61,7 +65,7 @@ mkdir bitcoinii-stack
 cd bitcoinii-stack
 ```
 
----
+***
 
 ### Create `docker-compose.yml`
 
@@ -143,7 +147,7 @@ volumes:
   bc2-data:
 ```
 
----
+***
 
 ### Start everything
 
@@ -151,34 +155,31 @@ volumes:
 docker compose up -d
 ```
 
----
+***
 
 ## Open the UI
 
-* **Health Dashboard:**
-  👉 [http://127.0.0.1:3000/health-ui](http://127.0.0.1:3000/health-ui)
+* **Health Dashboard:** 👉 [http://127.0.0.1:3000/health-ui](http://127.0.0.1:3000/health-ui)
+* **Explorer:** 👉 [http://127.0.0.1:3000/explorer](http://127.0.0.1:3000/explorer)
 
-* **Explorer:**
-  👉 [http://127.0.0.1:3000/explorer](http://127.0.0.1:3000/explorer)
+_(Root `/` redirects to Explorer)_
 
-*(Root `/` redirects to Explorer)*
-
----
+***
 
 ## How it works (Security model)
 
-* The BitcoinII node creates an **RPC cookie** at:
+*   The BitcoinII node creates an **RPC cookie** at:
 
-  ```
-  /data/.cookie
-  ```
+    ```
+    /data/.cookie
+    ```
 * The dashboard mounts this file **read-only**
 * No RPC username/password required
 * RPC port is **never exposed publicly**
 
 This matches Bitcoin Core’s recommended security model.
 
----
+***
 
 ## Health & Monitoring
 
@@ -186,7 +187,7 @@ This matches Bitcoin Core’s recommended security model.
 * Docker container includes a **built-in healthcheck**
 * Designed for **Prometheus / Grafana** integration later
 
----
+***
 
 ## Common Commands
 
@@ -216,7 +217,7 @@ docker compose pull
 docker compose up -d
 ```
 
----
+***
 
 ## Running Dashboard with a Non-Docker Node (Advanced)
 
@@ -233,7 +234,7 @@ docker run -d \
   kzwo/bitcoin-ii-dashboard:latest
 ```
 
----
+***
 
 ## Contributing
 
@@ -248,7 +249,7 @@ Ideas:
 * Disk usage & uptime
 * Dark/light theme toggle
 
----
+***
 
 ## Development
 
@@ -259,7 +260,7 @@ docker build -t bitcoinii-dashboard-dev .
 docker run -p 3000:3000 bitcoinii-dashboard-dev
 ```
 
----
+***
 
 ## Disclaimer
 
@@ -267,9 +268,8 @@ This is an **unofficial community project** and not endorsed by the BitcoinII Co
 
 Use at your own risk.
 
----
+***
 
 ## License
 
 MIT
-

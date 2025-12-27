@@ -1,72 +1,76 @@
-# BitcoinII Dashboard
+# docs
+
+## BitcoinII Dashboard
+
 **Self-Hosted Node Dashboard, Explorer & Wallet**
 
-BitcoinII Dashboard is a **lightweight, self-hosted web interface** for running and monitoring a **BitcoinII full node**.  
+BitcoinII Dashboard is a **lightweight, self-hosted web interface** for running and monitoring a **BitcoinII full node**.\
 It is designed to run **alongside your node**, prioritizing **security, simplicity, and local control**.
 
 This project provides:
 
-- 🩺 Node health & sync monitoring  
-- 🔍 Lightweight blockchain explorer  
-- 👛 Optional local wallet UI (advanced users only)  
-- 🐳 Docker-first deployment  
-- 🔐 Cookie-based RPC authentication  
+* 🩺 Node health & sync monitoring
+* 🔍 Lightweight blockchain explorer
+* 👛 Optional local wallet UI (advanced users only)
+* 🐳 Docker-first deployment
+* 🔐 Cookie-based RPC authentication
 
-> **Design Philosophy**  
+> **Design Philosophy**\
 > The dashboard must never reduce the security posture of the node it observes.
 
----
+***
 
-## Why This Project Exists
+### Why This Project Exists
 
 Running a full node should not require:
 
-- Exposing RPC ports publicly  
-- Heavy indexers for basic inspection  
-- Cloud dashboards with unclear security  
+* Exposing RPC ports publicly
+* Heavy indexers for basic inspection
+* Cloud dashboards with unclear security
 
 BitcoinII Dashboard was built to provide **clear visibility**, **minimal overhead**, and **strong defaults**, while remaining fully self-hosted.
 
----
+***
 
-## Features Overview
+### Features Overview
 
-| Feature | Description |
-|------|------------|
-| Health Check | Node sync, peers, mempool, chain state |
-| Explorer | Latest blocks, mempool, tx/block lookup |
-| Wallet UI | Local hot wallet (advanced use only) |
-| Security | Cookie-based RPC auth, no exposed RPC |
-| Platform | x86, ARM, NAS, Raspberry Pi |
-| Deployment | Docker / Docker Compose |
+| Feature      | Description                             |
+| ------------ | --------------------------------------- |
+| Health Check | Node sync, peers, mempool, chain state  |
+| Explorer     | Latest blocks, mempool, tx/block lookup |
+| Wallet UI    | Local hot wallet (advanced use only)    |
+| Security     | Cookie-based RPC auth, no exposed RPC   |
+| Platform     | x86, ARM, NAS, Raspberry Pi             |
+| Deployment   | Docker / Docker Compose                 |
 
----
+***
 
-# Getting Started
+## Getting Started
 
-## Requirements
+### Requirements
 
-- Docker ≥ 20  
-- Docker Compose v2  
-- A running BitcoinII full node  
+* Docker ≥ 20
+* Docker Compose v2
+* A running BitcoinII full node
 
-**Recommended image:**  
-- `kzwo/bitcoin-ii`
+**Recommended image:**
 
----
+* `kzwo/bitcoin-ii`
 
-## Quick Start (Docker Compose)
+***
 
-### 1. Create a project directory
+### Quick Start (Docker Compose)
+
+#### 1. Create a project directory
 
 ```bash
 mkdir bitcoinii-stack
 cd bitcoinii-stack
 ```
 
----
+***
 
-### 2. Create `docker-compose.yml`
+#### 2. Create `docker-compose.yml`
 
 ```yaml
 services:
@@ -102,93 +106,93 @@ volumes:
   bc2-data:
 ```
 
----
+***
 
-### 3. Start services
+#### 3. Start services
 
 ```bash
 docker compose up -d
 ```
 
----
+***
 
-## Accessing the UI
+### Accessing the UI
 
-| Feature | URL |
-|------|----|
+| Feature          | URL          |
+| ---------------- | ------------ |
 | Health Dashboard | `/health-ui` |
-| Explorer | `/explorer` |
-| Wallet | `/wallet` |
+| Explorer         | `/explorer`  |
+| Wallet           | `/wallet`    |
 
 > Root `/` redirects to Explorer.
 
----
+***
 
-# Health Check
+## Health Check
 
-![Health Check Placeholder](images/health.png)
+![Health Check Placeholder](../.gitbook/assets/health.png)
 
 Provides real-time visibility into node state and synchronization progress.
 
----
+***
 
-# Lightweight Explorer
+## Lightweight Explorer
 
-![Explorer Placeholder](images/explorer.png)
+![Explorer Placeholder](../.gitbook/assets/explorer.png)
 
 Inspect blockchain data via RPC without running an indexer.
 
----
+***
 
-# Wallet (Advanced Feature)
+## Wallet (Advanced Feature)
 
-![Wallet Overview Placeholder](images/new_wallet.png)
+![Wallet Overview Placeholder](../.gitbook/assets/new_wallet.png)
 
 The wallet UI is designed **only for trusted environments** (NAS, home servers).
 
----
+***
 
-## Creating a Wallet
+### Creating a Wallet
 
-![Wallet Create Placeholder](images/new_wallet01.png)
+![Wallet Create Placeholder](../.gitbook/assets/new_wallet01.png)
 
 Create a wallet once from the Overview page.
 
----
+***
 
-## Receiving Funds
+### Receiving Funds
 
-![Wallet Receive Placeholder](images/generate_address.png)
+![Wallet Receive Placeholder](../.gitbook/assets/generate_address.png)
 
 Generate fresh receiving addresses safely.
 
----
+***
 
-## Sending Funds
+### Sending Funds
 
-![Wallet Send Placeholder](images/spending.png)
+![Wallet Send Placeholder](../.gitbook/assets/spending.png)
 
 Spending is locked by default for safety.
 
----
+***
 
-## TOTP / Two-Factor Authentication
+### TOTP / Two-Factor Authentication
 
-![Wallet Settings Placeholder](images/settings.png)
+![Wallet Settings Placeholder](../.gitbook/assets/settings.png)
 
 Protect wallet actions using TOTP / 2FA.
 
----
+***
 
-# Security Architecture
+## Security Architecture
 
-- Cookie-based RPC authentication  
-- No exposed RPC credentials  
-- Network-isolated Docker services  
+* Cookie-based RPC authentication
+* No exposed RPC credentials
+* Network-isolated Docker services
 
----
+***
 
-# Development
+## Development
 
 ```bash
 git clone https://github.com/kleokzwo/health_check
@@ -204,21 +208,21 @@ docker compose logs -f dashboard
 
 ```
 
----
+***
 
-# Contributing
+## Contributing
 
 Contributions are welcome. Please open issues or pull requests.
 
----
+***
 
-# Disclaimer
+## Disclaimer
 
-This is an **unofficial community project**.  
+This is an **unofficial community project**.\
 Use at your own risk.
 
----
+***
 
-# License
+## License
 
 MIT
