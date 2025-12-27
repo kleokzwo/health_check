@@ -15,7 +15,7 @@ function kv(label, value, sub = "") {
 }
 
 function renderVinTable(vin) {
-  const table = el("table", { style: "margin-top:6px" });
+  const table = el("table", { style: "margin:6px 0 40px" });
   table.append(el("thead", {}, [el("tr", {}, [
     el("th", { text: "Prevout" }),
     el("th", { text: "Vout" }),
@@ -38,7 +38,7 @@ function renderVinTable(vin) {
 }
 
 function renderVoutTable(vout) {
-  const table = el("table", { style: "margin-top:6px" });
+  const table = el("table", { style: "margin:6px 0 40px" });
   table.append(el("thead", {}, [el("tr", {}, [
     el("th", { text: "N" }),
     el("th", { text: "Value" }),
@@ -159,7 +159,7 @@ export function renderInspectBlock(live, block, { onOpenTx }) {
 
   live.append(el("div", { class: "sub", style: "margin-top:10px", text: "TX preview (first 20)" }));
 
-  const table = el("table", { style: "margin-top:6px" });
+  const table = el("table", { style: "margin:6px 0 40px" });
   table.append(el("thead", {}, [el("tr", {}, [el("th", { text: "Txid" })])]));
   const tbody = el("tbody");
 
@@ -199,10 +199,10 @@ export function renderInspectTx(live, tx) {
     kv("Blockhash", shortHex(tx.blockhash, 18)),
   ]));
 
-  live.append(el("div", { class: "sub", style: "margin-top:12px", text: "Inputs (first 10)" }));
+  live.append(el("div", { class: "sub", style: "margin-top:40px; font-weight:800; text-transform: uppercase;", text: "Inputs (first 10)" }));
   live.append(renderVinTable((tx.vin || []).slice(0, 10)));
 
-  live.append(el("div", { class: "sub", style: "margin-top:12px", text: "Outputs (first 10)" }));
+  live.append(el("div", { class: "sub", style: "margin-top:40px; font-weight: 800; text-transform: uppercase;", text: "Outputs (first 10)" }));
   live.append(renderVoutTable((tx.vout || []).slice(0, 10)));
 }
 
@@ -225,7 +225,7 @@ export function renderInspectAddress(live, a, { onOpenTx }) {
 
   live.append(el("div", { class: "sub", style: "margin-top:12px", text: "Unspents (up to 50)" }));
 
-  const table = el("table", { style: "margin-top:6px" });
+  const table = el("table", { style: "margin:6px 0 40px" });
   table.append(el("thead", {}, [el("tr", {}, [
     el("th", { text: "Txid" }),
     el("th", { text: "Vout" }),
