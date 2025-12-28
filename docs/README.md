@@ -130,7 +130,7 @@ docker compose up -d
 
 ## Health Check
 
-![Health Check Placeholder](../.gitbook/assets/health.png)
+![Health Check](./images/health.png)
 
 Provides real-time visibility into node state and synchronization progress.
 
@@ -138,7 +138,7 @@ Provides real-time visibility into node state and synchronization progress.
 
 ## Lightweight Explorer
 
-![Explorer Placeholder](../.gitbook/assets/explorer.png)
+![Explorer](./images/explorer.png)
 
 Inspect blockchain data via RPC without running an indexer.
 
@@ -146,7 +146,7 @@ Inspect blockchain data via RPC without running an indexer.
 
 ## Wallet (Advanced Feature)
 
-![Wallet Overview Placeholder](../.gitbook/assets/new_wallet.png)
+![Wallet Overview](./images/new_wallet.png)
 
 The wallet UI is designed **only for trusted environments** (NAS, home servers).
 
@@ -154,7 +154,7 @@ The wallet UI is designed **only for trusted environments** (NAS, home servers).
 
 ### Creating a Wallet
 
-![Wallet Create Placeholder](../.gitbook/assets/new_wallet01.png)
+![Wallet Create](./images/new_wallet01.png)
 
 Create a wallet once from the Overview page.
 
@@ -162,7 +162,7 @@ Create a wallet once from the Overview page.
 
 ### Receiving Funds
 
-![Wallet Receive Placeholder](../.gitbook/assets/generate_address.png)
+![Wallet Receive](./images/generate_address.png)
 
 Generate fresh receiving addresses safely.
 
@@ -170,7 +170,7 @@ Generate fresh receiving addresses safely.
 
 ### Sending Funds
 
-![Wallet Send Placeholder](../.gitbook/assets/spending.png)
+![Wallet Send](./images/spending.png)
 
 Spending is locked by default for safety.
 
@@ -178,7 +178,7 @@ Spending is locked by default for safety.
 
 ### TOTP / Two-Factor Authentication
 
-![Wallet Settings Placeholder](../.gitbook/assets/settings.png)
+![Wallet Settings](./images/settings.png)
 
 Protect wallet actions using TOTP / 2FA.
 
