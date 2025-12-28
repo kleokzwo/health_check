@@ -5,12 +5,11 @@
   <title>BitcoinII Dashboard Docs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Theme (change to vue.css / buble.css / dark.css if you want) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-    <style>
-        body { background: rgb(240,240,245); }
-        .sidebar, .content { background: transparent; }
-    </style>
+  <!-- Base theme (light) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
+
+  <!-- Modern custom skin -->
+  <link rel="stylesheet" href="./_style.css" />
 </head>
 <body>
   <div id="app"></div>
@@ -19,10 +18,24 @@
     window.$docsify = {
       name: "BitcoinII Dashboard",
       repo: "https://github.com/kleokzwo/health_check",
+
+      // sidebar
       loadSidebar: true,
       subMaxLevel: 3,
-      search: "auto",
-      relativePath: true
+
+      // search
+      search: {
+        placeholder: "Search docs…",
+        noData: "No results",
+        depth: 3
+      },
+
+      // better relative paths on GitHub Pages
+      relativePath: true,
+
+      // nicer scroll + URLs
+      auto2top: true,
+      topMargin: 10
     };
   </script>
 
